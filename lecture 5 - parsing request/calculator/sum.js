@@ -3,7 +3,7 @@ const { buffer } = require("node:stream/consumers");
 const sumRequestHandler = (req,res)=>{
     console.log("In Sum Request Handler" ,req.url); 
     const body = [];
-    req.on ('data', chunk =>  body.push [chunk] );  
+    req.on ('data', chunk =>  body.push(chunk) );  
     req.on ('end',()=>{
         const bodyStr = Buffer.concat(body).toString();
         //console.log(bodyStr);
