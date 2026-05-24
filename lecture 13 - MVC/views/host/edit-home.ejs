@@ -1,0 +1,172 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+  <!-- Content -->
+  <main class="max-w-2xl mx-auto p-6 my-10">
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+      <!-- Header banner -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-center text-white relative">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
+        <span class="text-6xl block mb-3 drop-shadow">✏️</span>
+        <h1 class="text-3xl font-extrabold font-serif tracking-tight">Edit Your Airbnb Listing</h1>
+        <p class="text-white/85 text-sm mt-2 max-w-md mx-auto">Update your home's details below to keep your listing accurate and appealing for travelers.</p>
+      </div>
+
+      <form action="/host/edit-home" method="post" id="editHomeForm" class="p-8 space-y-6">
+        <!-- Hidden input for home ID -->
+        <input type="hidden" name="homeId" value="<%= home.id %>">
+
+        <!-- Grid for general details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- House Name -->
+          <div class="md:col-span-2">
+            <label for="houseName" class="block text-gray-700 font-extrabold text-sm mb-2 flex items-center gap-1.5">
+              <span>🏷️</span> House Name
+            </label>
+            <input type="text" id="houseName" name="houseName" value="<%= home.name %>" placeholder="e.g. Luxury Beachside Villa"
+                   class="border border-gray-200 px-4 py-3.5 rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-gray-800 transition duration-200 shadow-sm"
+                   required>
+          </div>
+
+          <!-- Price Per Night -->
+          <div>
+            <label for="price" class="block text-gray-700 font-extrabold text-sm mb-2 flex items-center gap-1.5">
+              <span>💰</span> Price per night
+            </label>
+            <div class="relative rounded-2xl shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <span class="text-gray-500 font-bold text-base">₹</span>
+              </div>
+              <input type="number" id="price" name="price" min="1" value="<%= home.price %>" placeholder="999"
+                     class="border border-gray-200 pl-8 pr-4 py-3.5 rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-gray-800 transition duration-200"
+                     required>
+              <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <span class="text-xs text-gray-400 font-bold">INR / night</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label for="location" class="block text-gray-700 font-extrabold text-sm mb-2 flex items-center gap-1.5">
+              <span>📍</span> Location / City
+            </label>
+            <input type="text" id="location" name="location" value="<%= home.location %>" placeholder="e.g. Goa, India"
+                   class="border border-gray-200 px-4 py-3.5 rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-gray-800 transition duration-200 shadow-sm"
+                   required>
+          </div>
+        </div>
+
+        <!-- Rating Stars -->
+        <div>
+          <label class="block text-gray-700 font-extrabold text-sm mb-2 flex items-center gap-1.5">
+            <span>⭐</span> Rating
+          </label>
+          <div class="flex items-center gap-2 bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+            <input type="hidden" name="rating" id="ratingInput" value="<%= home.rating %>">
+            <div class="flex gap-1.5" id="starContainer">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <button type="button" data-value="<%= i %>" 
+                        class="star-btn text-3xl <%= i <= home.rating ? 'text-amber-400' : 'text-gray-300' %> hover:scale-125 transition duration-150 focus:outline-none">★</button>
+              <% } %>
+            </div>
+            <span class="ml-3 text-sm font-extrabold text-gray-500" id="ratingText">
+              <%= parseFloat(home.rating).toFixed(1) %> / 5.0 
+              (<%= home.rating == 5 ? 'Excellent' : home.rating == 4 ? 'Very Good' : home.rating == 3 ? 'Good' : home.rating == 2 ? 'Fair' : 'Poor' %>)
+            </span>
+          </div>
+        </div>
+
+        <!-- Photo URL -->
+        <div>
+          <label for="photoUrl" class="block text-gray-700 font-extrabold text-sm mb-2 flex items-center gap-1.5">
+            <span>📸</span> Photo URL
+          </label>
+          <input type="url" id="photoUrl" name="photoUrl" value="<%= home.photoUrl %>"
+                 placeholder="https://images.unsplash.com/..."
+                 class="border border-gray-200 px-4 py-3.5 rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-gray-800 transition duration-200 shadow-sm">
+          <p class="text-xs text-gray-400 mt-1.5">Paste a public image URL (Unsplash, Pexels etc.) — Leave empty for default image.</p>
+
+          <!-- Live Preview -->
+          <div id="previewContainer" class="mt-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-4">
+            <div class="w-20 h-20 rounded-xl overflow-hidden shadow-md border border-white flex-shrink-0">
+              <img id="imagePreview" src="<%= home.photoUrl %>" class="w-full h-full object-cover" alt="Preview">
+            </div>
+            <div>
+              <h4 class="text-xs font-extrabold text-gray-700">Image Loaded</h4>
+              <span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-full mt-1">
+                <span>✓</span> Current Preview
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <a href="/host/host-home-list"
+             class="flex-1 text-center border border-gray-200 text-gray-500 font-bold py-4 px-6 rounded-2xl hover:bg-gray-50 active:scale-[0.99] transition duration-200 text-base">
+            Cancel
+          </a>
+          <button type="submit"
+                  class="flex-1 bg-blue-600 text-white font-extrabold py-4 px-6 rounded-2xl hover:bg-blue-700 hover:scale-[1.01] shadow-xl shadow-blue-200 active:scale-[0.99] transition duration-200 text-base">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    // Star Rating Logic
+    const starContainer = document.getElementById('starContainer');
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingText = document.getElementById('ratingText');
+    const stars = starContainer.querySelectorAll('.star-btn');
+    const ratingDescriptions = {
+      1: "1.0 / 5.0 (Poor)",
+      2: "2.0 / 5.0 (Fair)",
+      3: "3.0 / 5.0 (Good)",
+      4: "4.0 / 5.0 (Very Good)",
+      5: "5.0 / 5.0 (Excellent)"
+    };
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const val = parseInt(star.getAttribute('data-value'));
+        ratingInput.value = val;
+        ratingText.textContent = ratingDescriptions[val];
+        updateStarColors(val);
+      });
+    });
+
+    function updateStarColors(val) {
+      stars.forEach(s => {
+        const sVal = parseInt(s.getAttribute('data-value'));
+        if (sVal <= val) {
+          s.classList.remove('text-gray-300');
+          s.classList.add('text-amber-400');
+        } else {
+          s.classList.remove('text-amber-400');
+          s.classList.add('text-gray-300');
+        }
+      });
+    }
+
+    // Photo URL Preview
+    const photoUrlInput = document.getElementById('photoUrl');
+    const previewContainer = document.getElementById('previewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+
+    photoUrlInput.addEventListener('input', function() {
+      const val = this.value.trim();
+      if (val) {
+        imagePreview.src = val;
+        previewContainer.classList.remove('hidden');
+      } else {
+        previewContainer.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>
