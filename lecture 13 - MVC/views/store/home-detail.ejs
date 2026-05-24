@@ -1,0 +1,171 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+  <!-- Content -->
+  <main class="max-w-4xl mx-auto p-6 md:p-8 mt-6">
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+      <!-- Image Section -->
+      <div class="h-64 md:h-96 overflow-hidden relative">
+        <img src="<%= home.photoUrl %>" alt="<%= home.name %>" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+        <!-- Back Button -->
+        <a href="/homes" class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-800 font-bold text-xs px-4 py-2 rounded-xl shadow hover:bg-white transition">
+          ← Back to Homes
+        </a>
+
+        <!-- Rating Badge -->
+        <span class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-sm font-black text-rose-500 px-4 py-1.5 rounded-full shadow flex items-center gap-1">
+          <span>★</span> <%= parseFloat(home.rating).toFixed(1) %>
+        </span>
+
+        <!-- Title on Image -->
+        <div class="absolute bottom-6 left-6 right-6">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white font-serif tracking-tight drop-shadow-lg"><%= home.name %></h1>
+          <p class="text-white/80 text-sm mt-2 flex items-center gap-1.5">
+            <span>📍</span> <%= home.location %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Details Section -->
+      <div class="p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Left Column - Info -->
+          <div class="space-y-6">
+            <div>
+              <span class="text-[10px] bg-[#FF5A5F]/10 text-[#FF5A5F] px-3 py-1 rounded-full font-black tracking-wider uppercase inline-block mb-4">
+                ★ Verified Listing
+              </span>
+              <h2 class="text-2xl font-extrabold text-gray-800 font-serif mb-2">About this Home</h2>
+              <p class="text-gray-500 text-sm leading-relaxed">
+                Experience the perfect getaway at <strong><%= home.name %></strong> located in the heart of <strong><%= home.location %></strong>.
+                Enjoy premium amenities, breathtaking views, and world-class hospitality. Rated <strong><%= parseFloat(home.rating).toFixed(1) %>/5</strong> by guests.
+              </p>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gray-50 rounded-2xl p-4">
+                <p class="text-xs text-gray-400 font-extrabold uppercase tracking-wider">Location</p>
+                <p class="text-sm font-bold text-gray-700 mt-1 flex items-center gap-1"><span>📍</span> <%= home.location %></p>
+              </div>
+              <div class="bg-gray-50 rounded-2xl p-4">
+                <p class="text-xs text-gray-400 font-extrabold uppercase tracking-wider">Rating</p>
+                <p class="text-sm font-bold text-amber-500 mt-1 flex items-center gap-1"><span>⭐</span> <%= parseFloat(home.rating).toFixed(1) %> / 5.0</p>
+              </div>
+              <div class="bg-gray-50 rounded-2xl p-4">
+                <p class="text-xs text-gray-400 font-extrabold uppercase tracking-wider">Price</p>
+                <p class="text-sm font-black text-[#FF5A5F] mt-1">₹<%= parseInt(home.price).toLocaleString('en-IN') %><span class="text-xs font-bold text-gray-400">/night</span></p>
+              </div>
+              <div class="bg-gray-50 rounded-2xl p-4">
+                <p class="text-xs text-gray-400 font-extrabold uppercase tracking-wider">Status</p>
+                <p class="text-sm font-bold text-emerald-600 mt-1 flex items-center gap-1"><span>✅</span> Available Now</p>
+              </div>
+            </div>
+
+            <!-- Favourite Toggle -->
+            <div>
+              <% if (isFavourite) { %>
+                <form action="/favourites/remove" method="POST">
+                  <input type="hidden" name="homeId" value="<%= home.id %>">
+                  <input type="hidden" name="redirectTo" value="/homes/<%= home.id %>">
+                  <button type="submit" class="w-full bg-rose-100 text-rose-500 font-bold py-3 rounded-xl hover:bg-rose-200 transition flex items-center justify-center gap-2">
+                    ❤️ Remove from Wishlist
+                  </button>
+                </form>
+              <% } else { %>
+                <form action="/favourites" method="POST">
+                  <input type="hidden" name="homeId" value="<%= home.id %>">
+                  <button type="submit" class="w-full bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-rose-50 hover:text-rose-500 transition flex items-center justify-center gap-2">
+                    🤍 Add to Wishlist
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Right Column - Booking Form -->
+          <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 h-fit">
+            <h3 class="text-xl font-extrabold text-gray-800 mb-1">Book Your Stay</h3>
+            <p class="text-gray-400 text-xs font-bold mb-6">Fill in the dates to reserve this home</p>
+
+            <form action="/bookings" method="POST" class="space-y-4">
+              <input type="hidden" name="homeId" value="<%= home.id %>">
+
+              <div>
+                <label for="checkIn" class="block text-gray-700 font-extrabold text-xs mb-1.5">📅 Check-in Date</label>
+                <input type="date" id="checkIn" name="checkIn"
+                       class="border border-gray-200 px-4 py-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F] text-gray-800 transition text-sm"
+                       required>
+              </div>
+
+              <div>
+                <label for="checkOut" class="block text-gray-700 font-extrabold text-xs mb-1.5">📅 Check-out Date</label>
+                <input type="date" id="checkOut" name="checkOut"
+                       class="border border-gray-200 px-4 py-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/50 focus:border-[#FF5A5F] text-gray-800 transition text-sm"
+                       required>
+              </div>
+
+              <!-- Price Summary -->
+              <div class="bg-white rounded-xl p-4 border border-gray-200">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-500">Per Night</span>
+                  <span class="text-sm font-bold text-gray-700">₹<%= parseInt(home.price).toLocaleString('en-IN') %></span>
+                </div>
+                <div class="border-t border-gray-100 pt-2 flex justify-between items-center">
+                  <span class="text-sm font-bold text-gray-800">Total</span>
+                  <span class="text-lg font-black text-[#FF5A5F]">Select dates</span>
+                </div>
+              </div>
+
+              <button type="submit"
+                      class="w-full bg-[#FF5A5F] text-white font-extrabold py-3.5 rounded-xl hover:bg-red-600 hover:scale-[1.01] shadow-lg shadow-red-200 active:scale-[0.99] transition duration-200">
+                Book Now
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Price Calculator Script -->
+  <script>
+    const pricePerNight = <%= parseInt(home.price) %>;
+    const checkInInput = document.getElementById('checkIn');
+    const checkOutInput = document.getElementById('checkOut');
+
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    checkInInput.min = today;
+    checkOutInput.min = today;
+
+    function updateTotal() {
+      const checkIn = new Date(checkInInput.value);
+      const checkOut = new Date(checkOutInput.value);
+
+      if (checkInInput.value && checkOutInput.value && checkOut > checkIn) {
+        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+        const total = nights * pricePerNight;
+        const totalEl = document.querySelector('.font-black.text-\\[\\#FF5A5F\\]:last-child') ||
+                        document.querySelectorAll('.font-black.text-\\[\\#FF5A5F\\]');
+
+        // Update the total display
+        const summaryDiv = document.querySelector('.bg-white.rounded-xl.p-4');
+        if (summaryDiv) {
+          const totalSpan = summaryDiv.querySelectorAll('span');
+          totalSpan[totalSpan.length - 1].innerHTML = `₹${total.toLocaleString('en-IN')} <span class="text-xs font-bold text-gray-400">(${nights} night${nights > 1 ? 's' : ''})</span>`;
+        }
+      }
+    }
+
+    checkInInput.addEventListener('change', () => {
+      checkOutInput.min = checkInInput.value;
+      updateTotal();
+    });
+    checkOutInput.addEventListener('change', updateTotal);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-[#FF5A5F] via-rose-500 to-pink-600 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto px-6 py-20 md:py-28 relative z-10">
+      <span class="text-7xl block mb-4">🏡</span>
+      <h1 class="text-4xl md:text-6xl font-extrabold font-serif tracking-tight leading-tight mb-4">
+        Find Your Next<br><span class="text-yellow-200">Dream Stay</span>
+      </h1>
+      <p class="text-white/80 text-lg max-w-lg mb-8">
+        Discover unique homes, apartments, and experiences across the world. Book your perfect getaway today.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/homes" class="bg-white text-[#FF5A5F] px-8 py-3.5 rounded-xl font-extrabold text-base hover:scale-105 shadow-lg shadow-black/10 transition duration-300">
+          Browse Homes
+        </a>
+        <a href="/host/add-home" class="bg-white/15 backdrop-blur-sm text-white border border-white/30 px-8 py-3.5 rounded-xl font-extrabold text-base hover:bg-white/25 transition duration-300">
+          Become a Host
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Homes Section -->
+  <main class="max-w-6xl mx-auto p-6 md:p-8">
+    <div class="flex items-center justify-between mb-8 mt-8">
+      <h2 class="text-3xl font-extrabold text-gray-800 font-serif tracking-tight">Featured Homes</h2>
+      <a href="/homes" class="text-[#FF5A5F] font-bold text-sm hover:underline">View All →</a>
+    </div>
+
+    <% if (homes.length === 0) { %>
+      <div class="text-center py-16 bg-white rounded-3xl shadow-xl border border-gray-100 max-w-xl mx-auto px-6">
+        <span class="text-7xl block mb-6 animate-bounce">🏡</span>
+        <h2 class="text-2xl font-bold text-gray-700 mb-3">No Homes Registered Yet</h2>
+        <p class="text-gray-500 mb-8 max-w-md mx-auto">Be the first to list a beautiful home on Airbnb and share it with the world!</p>
+        <a href="/host/add-home" class="inline-block bg-[#FF5A5F] text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-red-600 hover:scale-105 shadow-md shadow-red-200 transition duration-300">
+          Register Your Home
+        </a>
+      </div>
+    <% } else { %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <% const featured = homes.slice(0, 6); %>
+        <% featured.forEach(home => { %>
+          <a href="/homes/<%= home.id %>" class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition duration-300 transform hover:-translate-y-1.5 flex flex-col group">
+            <!-- Image -->
+            <div class="h-52 overflow-hidden relative select-none">
+              <img src="<%= home.photoUrl %>" alt="<%= home.name %>"
+                   class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <!-- Rating Badge -->
+              <span class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-xs font-black text-rose-500 px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <span>★</span> <%= parseFloat(home.rating).toFixed(1) %>
+              </span>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-extrabold text-gray-800 tracking-tight leading-tight mb-2"><%= home.name %></h3>
+                <p class="text-gray-500 text-sm flex items-center gap-1.5 mb-4">
+                  <span class="text-base">📍</span> <%= home.location %>
+                </p>
+              </div>
+              <div class="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
+                <span class="text-xl font-black text-[#FF5A5F]">₹<%= parseInt(home.price).toLocaleString('en-IN') %><span class="text-xs font-bold text-gray-400"> / night</span></span>
+                <span class="text-[10px] bg-emerald-50 text-emerald-600 font-extrabold px-3 py-1 rounded-full tracking-wider uppercase">Available</span>
+              </div>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+
+      <% if (homes.length > 6) { %>
+        <div class="text-center mt-10">
+          <a href="/homes" class="inline-block bg-gray-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-gray-800 hover:scale-105 shadow-lg transition duration-300">
+            View All <%= homes.length %> Homes →
+          </a>
+        </div>
+      <% } %>
+    <% } %>
+  </main>
+
+  <!-- Stats Section -->
+  <section class="bg-gray-900 text-white py-16 mt-16">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-4xl font-black text-[#FF5A5F]"><%= homes.length %></p>
+        <p class="text-gray-400 text-sm font-bold mt-1">Active Listings</p>
+      </div>
+      <div>
+        <p class="text-4xl font-black text-yellow-400">⭐ 4.9</p>
+        <p class="text-gray-400 text-sm font-bold mt-1">Avg Rating</p>
+      </div>
+      <div>
+        <p class="text-4xl font-black text-emerald-400">100%</p>
+        <p class="text-gray-400 text-sm font-bold mt-1">Verified Hosts</p>
+      </div>
+      <div>
+        <p class="text-4xl font-black text-blue-400">24/7</p>
+        <p class="text-gray-400 text-sm font-bold mt-1">Support</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-8 border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <p class="text-gray-500 text-sm">🏡 <span class="font-bold text-gray-700">Airbnb Clone</span> — Built with Node.js, Express & EJS using MVC Architecture</p>
+      <p class="text-gray-400 text-xs mt-2">Complete Coding by Prashant Sir • NodeJS Complete Course</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+  <!-- Content -->
+  <main class="max-w-5xl mx-auto p-6 md:p-8">
+    <h1 class="text-center text-4xl md:text-5xl font-extrabold text-gray-800 mt-8 mb-4 font-serif tracking-tight">
+      ❤️ My Wishlist
+    </h1>
+    <p class="text-center text-gray-500 mb-12">Your saved favourite homes</p>
+
+    <% if (homes.length === 0) { %>
+      <div class="text-center py-16 bg-white rounded-3xl shadow-xl border border-gray-100 max-w-xl mx-auto px-6">
+        <span class="text-7xl block mb-6">💛</span>
+        <h2 class="text-2xl font-bold text-gray-700 mb-3">No Favourites Yet</h2>
+        <p class="text-gray-500 mb-8 max-w-md mx-auto">You haven't added any homes to your wishlist. Browse and save the ones you love!</p>
+        <a href="/homes" class="inline-block bg-[#FF5A5F] text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-red-600 hover:scale-105 shadow-md shadow-red-200 transition duration-300">
+          Browse Homes
+        </a>
+      </div>
+    <% } else { %>
+      <p class="text-gray-500 text-sm font-bold mb-6"><%= homes.length %> home<%= homes.length > 1 ? 's' : '' %> in your wishlist</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <% homes.forEach(home => { %>
+          <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition duration-300 transform hover:-translate-y-1.5 flex flex-col">
+            <!-- Image -->
+            <a href="/homes/<%= home.id %>" class="h-52 overflow-hidden relative group select-none block">
+              <img src="<%= home.photoUrl %>" alt="<%= home.name %>"
+                   class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+              <span class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-xs font-black text-rose-500 px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <span>★</span> <%= parseFloat(home.rating).toFixed(1) %>
+              </span>
+              <!-- Favourite Heart -->
+              <span class="absolute top-4 left-4 text-2xl drop-shadow-lg">❤️</span>
+            </a>
+
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <a href="/homes/<%= home.id %>" class="hover:text-[#FF5A5F] transition">
+                  <h3 class="text-xl font-extrabold text-gray-800 tracking-tight leading-tight mb-2"><%= home.name %></h3>
+                </a>
+                <p class="text-gray-500 text-sm flex items-center gap-1.5 mb-4">
+                  <span class="text-base">📍</span> <%= home.location %>
+                </p>
+              </div>
+              <div class="pt-4 border-t border-gray-100 mt-auto">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xl font-black text-[#FF5A5F]">₹<%= parseInt(home.price).toLocaleString('en-IN') %><span class="text-xs font-bold text-gray-400"> / night</span></span>
+                </div>
+                <div class="flex gap-2">
+                  <a href="/homes/<%= home.id %>" class="flex-1 text-center bg-[#FF5A5F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-red-600 transition">
+                    View & Book
+                  </a>
+                  <form action="/favourites/remove" method="POST" class="flex-shrink-0">
+                    <input type="hidden" name="homeId" value="<%= home.id %>">
+                    <input type="hidden" name="redirectTo" value="/favourites">
+                    <button type="submit" class="bg-red-50 text-red-500 text-xs font-bold py-2.5 px-3 rounded-xl hover:bg-red-100 transition" title="Remove from Wishlist">
+                      ✕ Remove
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+
+</body>
+</html>

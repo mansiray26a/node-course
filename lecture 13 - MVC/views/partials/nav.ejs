@@ -1,0 +1,70 @@
+<!-- Navigation Bar - Shared across all pages -->
+<header class="bg-[#FF5A5F] py-3 px-4 md:px-6 shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="text-white font-extrabold text-2xl tracking-tight select-none flex items-center gap-1.5">
+      <span class="text-3xl">🏡</span> <span class="hidden sm:inline font-serif font-bold">airbnb</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="hidden md:flex items-center gap-1">
+      <a href="/" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'home' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>🏠</span> Home
+      </a>
+      <a href="/homes" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'home-list' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>🔍</span> Browse
+      </a>
+      <a href="/bookings" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'bookings' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>📅</span> Bookings
+      </a>
+      <a href="/favourites" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'favourites' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>❤️</span> Wishlist
+      </a>
+
+      <!-- Separator -->
+      <div class="w-px h-6 bg-white/25 mx-1"></div>
+
+      <a href="/host/host-home-list" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'host-home-list' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>📋</span> My Listings
+      </a>
+      <a href="/host/add-home" class="px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'add-home' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>➕</span> Add Home
+      </a>
+    </nav>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl focus:outline-none hover:bg-white/10 p-2 rounded-lg transition">
+      ☰
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <div id="mobileMenu" class="hidden md:hidden mt-3 bg-white/10 backdrop-blur-sm rounded-xl p-3 space-y-1">
+    <a href="/" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'home' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      🏠 Home
+    </a>
+    <a href="/homes" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'home-list' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      🔍 Browse Homes
+    </a>
+    <a href="/bookings" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'bookings' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      📅 My Bookings
+    </a>
+    <a href="/favourites" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'favourites' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      ❤️ Wishlist
+    </a>
+    <div class="border-t border-white/20 my-2"></div>
+    <a href="/host/host-home-list" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'host-home-list' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      📋 My Listings
+    </a>
+    <a href="/host/add-home" class="block px-4 py-2.5 rounded-lg font-bold text-sm transition duration-200 <%= currentPage === 'add-home' ? 'bg-white text-[#FF5A5F]' : 'text-white hover:bg-white/10' %>">
+      ➕ Add Home
+    </a>
+  </div>
+</header>
+
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('hidden');
+  }
+</script>

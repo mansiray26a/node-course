@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="/output.css" />
+  <!-- Import Outfit or Inter font for premium aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50/50 min-h-screen">
+  <!-- Airbnb Header -->
+  <header class="bg-[#FF5A5F] py-4 px-6 shadow-md flex items-center justify-between sticky top-0 z-50">
+    <div class="flex gap-3">
+      <a href="/" class="px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'home' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>🏠</span> Go to Home
+      </a>
+      <a href="/host/add-home" class="px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-1.5 transition duration-200 <%= currentPage === 'add-home' ? 'bg-white text-[#FF5A5F] shadow-sm' : 'text-white hover:bg-white/10' %>">
+        <span>➕</span> Add Home
+      </a>
+    </div>
+    <div class="text-white font-extrabold text-2xl tracking-tight select-none flex items-center gap-1.5">
+      <span class="text-3xl">🏡</span> <span class="hidden sm:inline font-serif font-bold">airbnb</span>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-md mx-auto p-6 mt-16">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden p-8 text-center">
+      <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
+        <span class="text-4xl text-emerald-500">🎉</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-gray-800 font-serif mb-3 tracking-tight">Home Registered Successfully</h1>
+      <p class="text-gray-500 mb-8 max-w-sm mx-auto">Your home has been registered and is now listed on Airbnb for travelers around the world.</p>
+      <a href="/" 
+         class="inline-block bg-[#FF5A5F] text-white font-extrabold py-3.5 px-8 rounded-xl hover:bg-red-600 hover:scale-105 active:scale-95 shadow-md shadow-red-200 transition duration-200">
+        Return to Home
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>
